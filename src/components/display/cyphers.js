@@ -1,14 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 
-const Cyphers = ({ value }) => (
-  <span>
-    {`${value}`.padStart(2, "0")}
-  </span>
-);
+const Cyphers = ({value}) => <span>{`${value}`.padStart(2, "0")}</span>;
 
 Cyphers.propTypes = {
-  value: PropTypes.number.isRequired,
-}
+    value: PropTypes.number.isRequired,
+};
 
 export default Cyphers;
