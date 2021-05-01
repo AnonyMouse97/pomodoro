@@ -1,37 +1,33 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 
-export default (initialSeconds, initialRunning = false) => {
-  const [seconds, setSeconds] = useState(initialSeconds);
-  const [running, setRunning] = useState(initialRunning);
-  const [intervalId, setIntervalId] = useState(null);
+const noop = () => {};
 
-  useEffect(
-    () => {
-      if (running) {
-        setIntervalId(setInterval(
-          () => setSeconds(Math.max(0, seconds - 1)),
-          1000,
-        ));
+export default (initialSeconds, initialRunning = false, onFinished = noop) => {
+    const [seconds, setSeconds] = useState(initialSeconds);
+    const [running, setRunning] = useState(initialRunning);
+    const [intervalId, setIntervalId] = useState(null);
 
-        if (seconds === 0) {
-          setRunning(false);
-          // warn parent !
+    useEffect(() => {
+        if (running) {
+            setIntervalId(
+                setInterval(() => setSeconds(Math.max(0, seconds - 1)), 1000),
+            );
+
+            if (seconds === 0) {
+                setRunning(false);
+                onFinished();
+            }
+        } else if (intervalId) {
+            clearInterval(intervalId);
+            setIntervalId(null);
         }
-      } else if (intervalId) {
-        clearInterval(intervalId);
-        setIntervalId(null);
-      }
 
-      return () => {
-        if (intervalId) {
-          clearInterval(intervalId)
-        }
-      }
-    },
-    [running, seconds]
-  )
-  return [
-    { seconds, running },
-    { setSeconds, setRunning },
-  ];
-}
+        return () => {
+            intervalId && clearInterval(intervalId);
+        };
+    }, [running, seconds]);
+    return [
+        {seconds, running},
+        {setSeconds, setRunning},
+    ];
+};

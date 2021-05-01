@@ -7,21 +7,21 @@ const styles = {
     fontSize: "10rem",
     textAlign: "center",
 };
-const Display = ({ seconds, running = false }) => {
-    return (
-        <div style={styles}>
-            <Cyphers value={Math.floor(seconds / 60)} />
-            <span style={{
+const Display = ({seconds}) => (
+    <div style={styles}>
+        <Cyphers value={Math.floor(seconds / 60)} />
+        <span
+            style={{
                 opacity: seconds % 2 ? 0 : 1,
-            }}>{":"}</span>
-            <Cyphers value={seconds % 60} />
-        </div>
-    );
-};
+            }}>
+            {":"}
+        </span>
+        <Cyphers value={seconds % 60} />
+    </div>
+);
 
 Display.propTypes = {
     seconds: PropTypes.number.isRequired,
-    running: PropTypes.bool,
 };
 
 export default Display;
